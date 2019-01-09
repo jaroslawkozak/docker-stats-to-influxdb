@@ -16,12 +16,13 @@ def store_docker_stats():
     client = docker.from_env()
     for con in client.containers.list():
         stats = con.stats(stream=False)
+        print stats
         container_name = stats["name"]
         #precpu = stats["precpu_stats"]
 
         #values.update({"cpu_usage": stats["cpu_stats"]["cpu_usage"]["total_usage"]})
-        values.update({"cpu_usage": stats["memory_stats"]["usage"]})
-        values.update({"cpu_usage": stats["memory_stats"]["limit"]})
+        values.update({"mem_usage": stats["memory_stats"]["usage"]})
+        values.update({"mem_limit": stats["memory_stats"]["limit"]})
         out_rx, out_tx = get_current_network_usage(stats)
         values.update({"rx_bytes": out_rx})
         values.update({"tx_bytes": out_tx})
