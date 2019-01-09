@@ -16,7 +16,6 @@ def store_docker_stats():
     client = docker.from_env()
     for con in client.containers.list():
         stats = con.stats(stream=False)
-        print(stats)
         container_name = stats["name"]
         #precpu = stats["precpu_stats"]
 
@@ -29,6 +28,7 @@ def store_docker_stats():
         values.update({"rx_bytes": out_rx})
         values.update({"tx_bytes": out_tx})
     client.close()
+    print(values)
     DataStorage.put(container_name, values)
 
 
