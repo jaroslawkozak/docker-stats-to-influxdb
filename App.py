@@ -16,7 +16,7 @@ def store_docker_stats():
     client = docker.from_env()
     for con in client.containers.list():
         stats = con.stats(stream=False)
-        print stats
+        print(stats)
         container_name = stats["name"]
         #precpu = stats["precpu_stats"]
 
