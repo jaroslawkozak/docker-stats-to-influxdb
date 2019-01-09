@@ -21,8 +21,10 @@ def store_docker_stats():
         #precpu = stats["precpu_stats"]
 
         #values.update({"cpu_usage": stats["cpu_stats"]["cpu_usage"]["total_usage"]})
-        values.update({"mem_usage": stats["memory_stats"]["usage"]})
-        values.update({"mem_limit": stats["memory_stats"]["limit"]})
+        if "usage" in stats["memory_stats"]:
+            values.update({"mem_usage": stats["memory_stats"]["usage"]})
+        if "limit" in stats["memory_stats"]:
+            values.update({"mem_limit": stats["memory_stats"]["limit"]})
         out_rx, out_tx = get_current_network_usage(stats)
         values.update({"rx_bytes": out_rx})
         values.update({"tx_bytes": out_tx})
