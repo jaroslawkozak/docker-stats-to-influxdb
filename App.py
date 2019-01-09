@@ -65,7 +65,7 @@ def get_current_network_usage(stats):
 
 if __name__ == "__main__":
     sched = BackgroundScheduler(daemon=True)
-    sched.add_job(store_docker_stats, 'interval', seconds=1)
+    sched.add_job(store_docker_stats, 'interval', seconds=5)
     sched.start()
     app.run(host='0.0.0.0', port=5556, debug=True, threaded=True)
 
