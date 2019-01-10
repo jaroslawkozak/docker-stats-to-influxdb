@@ -27,10 +27,9 @@ def store_docker_stats():
         out_rx, out_tx = get_current_network_usage(stats)
         values.update({"rx_bytes": out_rx})
         values.update({"tx_bytes": out_tx})
+        DataStorage.put(container_name, values)
     client.close()
 
-    print(values)
-    DataStorage.put(container_name, values)
 
 def calculate_cpu_percent(stats):
     cpu_count = len(stats["cpu_stats"]["cpu_usage"]["percpu_usage"])

@@ -22,7 +22,9 @@ class DataStorage:
     @staticmethod
     def put(measurement_type, value):
         logging.info("Sending data for storage. %s: %s", measurement_type, value)
-        DataStorage.client.write_points(DataStorage.format(measurement_type, value))
+        points = DataStorage.format(measurement_type, value)
+        print(points)
+        DataStorage.client.write_points(points)
 
     @staticmethod
     def format(container, values):
