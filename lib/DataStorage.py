@@ -33,8 +33,7 @@ class DataStorage:
                     "container": container,
                 },
                 "time": datetime.datetime.utcnow(),
-                "fields": {
-                    values
-                }
+                "fields": values
+
             }
         ]

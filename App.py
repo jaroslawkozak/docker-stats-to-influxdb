@@ -17,9 +17,9 @@ def store_docker_stats():
     for con in client.containers.list():
         stats = con.stats(stream=False)
         container_name = stats["name"]
-        #precpu = stats["precpu_stats"]
+        cpu_usage = calculate_cpu_percent(stats)
 
-        #values.update({"cpu_usage": stats["cpu_stats"]["cpu_usage"]["total_usage"]})
+        values.update({"cpu_usage": cpu_usage})
         if "usage" in stats["memory_stats"]:
             values.update({"mem_usage": stats["memory_stats"]["usage"]})
         if "limit" in stats["memory_stats"]:
@@ -28,8 +28,20 @@ def store_docker_stats():
         values.update({"rx_bytes": out_rx})
         values.update({"tx_bytes": out_tx})
     client.close()
+
     print(values)
     DataStorage.put(container_name, values)
+
+def calculate_cpu_percent(stats):
+    cpu_count = len(stats["cpu_stats"]["cpu_usage"]["percpu_usage"])
+    cpu_percent = 0.0
+    cpu_delta = float(stats["cpu_stats"]["cpu_usage"]["total_usage"]) - \
+                float(stats["precpu_stats"]["cpu_usage"]["total_usage"])
+    system_delta = float(stats["cpu_stats"]["system_cpu_usage"]) - \
+                   float(stats["precpu_stats"]["system_cpu_usage"])
+    if system_delta > 0.0:
+        cpu_percent = cpu_delta / system_delta * 100.0 * cpu_count
+    return cpu_percent
 
 
 def get_current_network_usage(stats):
