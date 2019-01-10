@@ -15,7 +15,7 @@ def store_docker_stats():
     for con in client.containers.list():
         stats = con.stats(stream=False)
         container_name = stats["name"]
-        DataStorage.put(container_name, StatUtils.get_stat_values())
+        DataStorage.put(container_name, StatUtils.get_stat_values(stats))
     client.close()
 
 if __name__ == "__main__":
